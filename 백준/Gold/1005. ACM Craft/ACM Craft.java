@@ -2,55 +2,56 @@ import java.util.*;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
-    static int t, n, k, w;
-    static int[] times, indegree, result;
-    static List<Integer>[] list;
+    static int T, n, k, w;
+    static int[] times;
+    static int[] degree;
+    static int[] resultTimes;
+
+    static LinkedList<Integer>[] list;
 
     public static void main(String[] args) {
-        t = sc.nextInt();
-        for (int p = 0; p < t; p++) {
+        T = sc.nextInt();
+        for(int p = 0; p < T; p++) {
             n = sc.nextInt();
             k = sc.nextInt();
-            times = new int[n + 1];
-            indegree = new int[n + 1];
-            result = new int[n + 1];
-            list = new LinkedList[n + 1];
-
-            for (int i = 1; i <= n; i++) {
+            times = new int[n];
+            for(int i = 0; i < n; i++) {
                 times[i] = sc.nextInt();
+            }
+            list = new LinkedList[n];
+            for(int i = 0;  i < n; i++) {
                 list[i] = new LinkedList<>();
             }
-
-            for (int i = 0; i < k; i++) {
-                int from = sc.nextInt();
-                int to = sc.nextInt();
+            degree = new int[n];
+            for(int i = 0; i < k; i++) {
+                int from = sc.nextInt() -1;
+                int to = sc.nextInt() -1;
                 list[from].add(to);
-                indegree[to]++;
+                degree[to]++;
             }
-
             w = sc.nextInt();
-            System.out.println(topologicalSort());
-        }
-    }
 
-    static int topologicalSort() {
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 1; i <= n; i++) {
-            result[i] = times[i];
-            if (indegree[i] == 0) {
-                q.offer(i);
-            }
-        }
 
-        while (!q.isEmpty()) {
-            int current = q.poll();
-            for (int next : list[current]) {
-                result[next] = Math.max(result[next], result[current] + times[next]);
-                if (--indegree[next] == 0) {
-                    q.offer(next);
+            Queue<Integer> q= new LinkedList<>();
+            resultTimes = new int[n];
+            for(int i = 0; i < n; i++) {
+                if(degree[i] == 0) {
+                    resultTimes[i] = times[i];
+                    q.offer(i);
                 }
             }
+            while(!q.isEmpty()) {
+                int cur = q.poll();
+                while (!list[cur].isEmpty()) {
+                    int next = list[cur].poll();
+                    degree[next]--;
+                    resultTimes[next] = Math.max(resultTimes[next], resultTimes[cur] + times[next]);
+                    if (degree[next] == 0) {
+                        q.offer(next);
+                    }
+                }
+            }
+            System.out.println(resultTimes[w-1]);
         }
-        return result[w];
     }
 }
