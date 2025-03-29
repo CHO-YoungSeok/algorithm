@@ -1,15 +1,16 @@
 import java.util.*;
 
+
 class Point {
 	int h, m, n;
 	int level;
-	Point(int h, int n, int m, int level) {
+	Point(int h, int n, int m) {
 		this.h = h;
 		this.n = n;
 		this.m = m;
-		this.level = level;
 	}
 }
+
 
 public class Main {
 
@@ -32,9 +33,11 @@ public class Main {
 
 	    			if(field[k][i][j] == 0) {
 	    				prematual++;
+	    				// System.out.println("" + "k, i, j " + k +" " + i + " " + j);
 	    			} else if(field[k][i][j] == 1) {
 	    				bIsVisited[k][i][j] = true;
-	    				Point p = new Point(k,i,j, 0);
+	    				Point p = new Point(k,i,j);
+	    				
 	    				q.offer(p);
 	    			} 
 	    		}
@@ -47,28 +50,32 @@ public class Main {
 
     	int maxLevel = 0;
 		while(!q.isEmpty()) {
-			Point rP = q.poll();
-			maxLevel = Math.max(maxLevel, rP.level);
-			for(int i = 0; i < 6; i++) {
-				int rH = rP.h + dh[i];
-				int rN = rP.n + dn[i];
-				int rM = rP.m + dm[i];
-				
-				if(rH < 0 || h <= rH || rM < 0 || m <= rM || rN < 0 || n <= rN || bIsVisited[rH][rN][rM]) {
-					continue;
-				}
+			int size = q.size();
+			while(0 < size--) {
+				Point rP = q.poll();
+				maxLevel = Math.max(maxLevel, rP.level);
+				for(int i = 0; i < 6; i++) {
+					int rH = rP.h + dh[i];
+					int rN = rP.n + dn[i];
+					int rM = rP.m + dm[i];
+					
+					if(rH < 0 || h <= rH || rM < 0 || m <= rM || rN < 0 || n <= rN || bIsVisited[rH][rN][rM]) {
+						continue;
+					}
 
-				if(field[rH][rN][rM] == 0) { 
-					field[rH][rN][rM] = 1;
-					bIsVisited[rH][rN][rM] = true;
-					prematual--;
-					q.offer(new Point(rH, rN, rM, rP.level + 1));
+					if(field[rH][rN][rM] == 0) { 
+						field[rH][rN][rM] = 1;
+						bIsVisited[rH][rN][rM] = true;
+						prematual--;
+						q.offer(new Point(rH, rN, rM));
+					}
 				}
 			}
+			maxLevel++;
 		}
 
 		if(0 <= maxLevel && prematual == 0) {
-			System.out.println(maxLevel);
+			System.out.println(maxLevel-1);
 		} else {
 			System.out.println(-1);
 		}
