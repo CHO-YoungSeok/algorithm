@@ -25,7 +25,7 @@
                 int recentNode = q.poll();
                 System.out.print(recentNode + 1 + " ");
                 for(int i = 0; i < n; i++){
-                    if(!visited[i] && graph[recentNode][i]) {
+                    if(!visited[i] && graph[recentNode][i]) { //bfs현재 방문노드는 recentNode, node가 아니다.
                         visited[i] = true;
                         q.add(i);
                     }
@@ -41,15 +41,15 @@
             int v = sc.nextInt();
 
             boolean[][] graph = new boolean[n][n];
-            visited = new boolean[n];
+            visited = new boolean[n];  // visited는 1차원이면 가능.
 
             for(int i = 0; i < m; i++) {
                 int n1 = sc.nextInt();
                 int n2 = sc.nextInt();
-                graph[n1 -1][n2 -1] = true;
-                graph[n2 -1][n1 -1] = true;
+                graph[n1 -1][n2 -1] = true; 
+                graph[n2 -1][n1 -1] = true; // 양방향 그래프
             }
-            Arrays.fill(visited, false);
+            Arrays.fill(visited, false); 
             visited[v-1] = true;
             dfs(graph, v-1);
             System.out.println();
