@@ -9,19 +9,19 @@ public class Main {
           BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
           StringBuilder sb = new StringBuilder();
         
-          int N = Integer.parseInt(br.readLine());
-          int[] arr = new int[N];
+          int n = Integer.parseInt(br.readLine());
+          int[] arr = new int[10000];
         
-          for(int i = 0; i < N; i++){
-               arr[i] = Integer.parseInt(br.readLine());
+          for(int i = 0; i < n; i++) {
+               int currN = Integer.parseInt(br.readLine());
+               arr[currN-1]++;
           }
-        
-          Arrays.sort(arr);
-        
-          for(int i = 0; i < N; i++){
-               sb.append(arr[i]).append('\n');
+
+          for(int i = 0; i < 10000; i++){
+               for(int j = 0; j < arr[i]; j++) {
+                    sb.append(i+1 + "\n");
+               }
           }
- 
           System.out.println(sb);
      }
 }
