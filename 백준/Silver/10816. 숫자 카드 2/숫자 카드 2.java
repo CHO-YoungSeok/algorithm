@@ -9,7 +9,7 @@ public class Main {
                int num = sc.nextInt();
                if(map.containsKey(num)) {
                     int a = map.get(num);
-                    map.remove(num);
+                    // map.remove(num);
                     map.put(num, a+1);
                }
                else {
