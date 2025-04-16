@@ -1,13 +1,8 @@
 import java.util.*;
 
-
 class Number {
      int value = 0;
      int quantity = 0;
-     Number(int value) {
-          this.value = value;
-     }
-
      Number(int value, int quantity) {
           this.value = value;
           this.quantity = quantity;
@@ -18,31 +13,33 @@ public class Main{
 
      public static void main(String[] args) {
           Scanner sc = new Scanner(System.in);
-          int n = sc.nextInt();
-          List<Number> list = new ArrayList<>();
-
-          for(int i = 0; i < n; i++) {
-               list.add(new Number(sc.nextInt()));
-          }
-          list.sort((e1, e2) -> e1.value - e2.value);
           StringBuilder sb = new StringBuilder();
+
+          int n = sc.nextInt();
+          List<Integer> list = new ArrayList<>();
+          for(int i = 0; i < n; i++) {
+               list.add(sc.nextInt());
+          }
+          list.sort((e1, e2) -> e1 - e2);
+          
           int sum = 0;
           for(int i = 0; i < n; i++) {
-               sum += list.get(i).value;
+               sum += list.get(i);
           }
-          String answer1 = "";
+          
           if(String.format("%.0f", (double)sum / n).equals("-0")) {
-               answer1 = "0";
+               sb.append("0\n");
           } else {
-               answer1 = String.format("%.0f", (double)sum / n);
+               sb.append(String.format("%.0f\n", (double)sum / n));
           }
-          sb.append(answer1 + "\n");
-          sb.append(list.get(n/2).value + "\n");
+
+          sb.append(list.get(n/2) + "\n");
+
           List<Number> vqList = new ArrayList<>();
           for(int i = 0; i < n; i++) {
-               int num = list.get(i).value;
+               int num = list.get(i);
                int q = 1;
-               while(i < list.size() - 1 && num == list.get(i + 1).value) {
+               while(i < list.size() - 1 && num == list.get(i + 1)) {
                     q++;
                     i++;
                }
@@ -61,7 +58,7 @@ public class Main{
                sb.append(vqList.get(0).value + "\n");
           }
 
-          sb.append("" + (list.get(list.size() - 1).value - list.get(0).value));
+          sb.append("" + (list.get(list.size() - 1) - list.get(0)));
           System.out.println(sb);
      }
 }
