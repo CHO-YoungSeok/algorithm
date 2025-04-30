@@ -4,11 +4,11 @@ import java.io.*;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
         int[] nums = new int[n+1];
         for(int i = 1; i < n+1; i++) {
-            nums[i] = sc.nextInt();
+            nums[i] = Integer.parseInt(br.readLine());
         }
         int count = 0;
         StringBuilder sb = new StringBuilder();
