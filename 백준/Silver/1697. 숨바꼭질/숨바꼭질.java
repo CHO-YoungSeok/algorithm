@@ -3,10 +3,12 @@ import java.io.*;
 class Main {
 
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] strs = br.readLine().split(" ");
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+
+        int n = Integer.parseInt(strs[0]);
+        int m = Integer.parseInt(strs[1]);
         boolean[]field = new boolean[100001];
         int[]distance = new int[100001];
         distance[n] = 0;
