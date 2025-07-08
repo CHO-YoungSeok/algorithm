@@ -3,32 +3,36 @@ import java.util.*;
 class Solution {
     public int solution(int[][] board, int[] moves) {
         int answer = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
         
-        List<Integer> list = new ArrayList<>();
-        for (int m : moves) {
-            int c = m - 1;
-            int r = 0;
+        for (int dir : moves) {
+            int c = dir - 1;
             if (board[board.length - 1][c] == 0) {
                 continue;
             }
-            for (r = 0; r < board.length; r++) {
-                if (board[r][c] != 0) {
-                    break;
-                }
+            
+            int r = 0;
+            while (board[r][c] == 0) {
+                r++;
             }
             
-            list.add(board[r][c]);
-            board[r][c] = 0;
-            
             if (
-                list.size() > 1 && 
-                list.get(list.size() - 1) == list.get(list.size() - 2)
+                stack.peek() != null &&
+                stack.peek() == board[r][c]
             ) {
                 answer += 2;
-                list.remove(list.size() - 1);
-                list.remove(list.size() - 1);
-            } 
+                stack.pop();
+                System.out.println(answer + ": " + board[r][c] + 
+                                   " r=" + r + " c=" + c);
+            } else {
+                stack.push(board[r][c]);
+            }
+            
+            board[r][c] = 0;           
+            
         }
+        
+        
         return answer;
     }
 }
