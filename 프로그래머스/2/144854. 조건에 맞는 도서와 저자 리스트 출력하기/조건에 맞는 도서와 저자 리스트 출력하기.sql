@@ -1,6 +1,6 @@
 -- 코드를 입력하세요
 SELECT
-    b.book_id, a.author_name, date_format (b.published_date, '%Y-%m-%d') as published_date
+    b.book_id, a.author_name, to_char (b.published_date, 'YYYY-MM-DD') as published_date
 from
     book b
     join author a
