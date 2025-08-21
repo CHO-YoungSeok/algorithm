@@ -1,22 +1,13 @@
 import java.util.*;
 
-class Node implements Comparable<Node> {
+class Node {
     int id, x, y;
-    Node right, left;
+    Node left, right;
     
     Node(int id, int x, int y) {
         this.id = id;
         this.x = x;
         this.y = y;
-    }
-    
-    @Override
-    public int compareTo(Node n) {
-        if (this.y == n.y) {
-            return this.x - n.x;
-        } else {
-            return n.y - this.y;
-        }
     }
     
     @Override
@@ -26,68 +17,63 @@ class Node implements Comparable<Node> {
 }
 
 class Solution {
-    
     static int index = 0;
     
-    void connect(Node parent, Node child) {
-        if (child.x < parent.x) {
-            if (parent.left == null) parent.left = child;
-            else connect(parent.left, child);
-        } else { 
-            if (parent.right == null) parent.right = child;
-            else connect(parent.right, child);
-        }
-    }
-    
-    void preorder(Node curr, int[][] answer) {
-        answer[0][index++] = curr.id;
-        
-        if (curr.left != null) {
-            preorder(curr.left, answer);
-        }
-        
-        if (curr.right != null) {
-            preorder(curr.right, answer);
-        }        
-    }
-    
-    void postorder(Node curr, int[][] answer) {
-        
-        if (curr.left != null) {
-            postorder(curr.left, answer);
-        }
-        if (curr.right != null) {
-            postorder(curr.right, answer);
-        }
-        
-        answer[1][index++] = curr.id;        
-    }
-    
-    
     public int[][] solution(int[][] nodeinfo) {
-        
-        List<Node> list = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
         for (int i = 0; i < nodeinfo.length; i++) {
-            list.add(new Node(i + 1, nodeinfo[i][0], nodeinfo[i][1]));
+            nodes.add(new Node(i + 1, nodeinfo[i][0], nodeinfo[i][1]));
         }
-        
-        list.sort(Comparator
-                  .comparingInt((Node n) -> n.y).reversed()
-                  .thenComparingInt(n -> n.x));
+        nodes.sort(Comparator
+                   .comparingInt((Node node) -> node.y).reversed()            
+        );
 
-        list.forEach(System.out::println);
+        nodes.stream()
+            .skip(1)
+            .forEach(curr -> connectNode(nodes.get(0), curr));
         
-        Node root = list.get(0);
-        for (int i = 1; i < list.size(); i++) {
-            connect(root, list.get(i));
-        }
+        int[][] answer = new int[2][nodes.size()];
         
-        int[][] answer = new int[2][list.size()];
-        
-        preorder(root, answer);
         index = 0;
-        postorder(root, answer);
+        preorder(nodes, answer, nodes.get(0));
+        Arrays.stream(answer[0]).forEach(e -> System.out.print(e + " "));
+        
+        index = 0;
+        postorder(nodes, answer, nodes.get(0));
+        Arrays.stream(answer[1]).forEach(e -> System.out.print(e + " "));
         
         return answer;
+    }
+    
+    void connectNode(Node parent, Node child) {
+        if (parent.x < child.x) {
+            if (parent.right == null) {
+                parent.right = child;
+            } else {
+                connectNode(parent.right, child);
+            }
+        } else {
+            if (parent.left == null) {
+                parent.left = child;
+            } else {
+                connectNode(parent.left, child);
+            }
+        }    
+    }
+    
+    void preorder(List<Node> nodes, int[][] answer, Node curr) {
+        if (curr == null) return;
+        
+        answer[0][index++] = curr.id;
+        preorder(nodes, answer, curr.left);
+        preorder(nodes, answer, curr.right);            
+    }
+    
+    void postorder(List<Node> nodes, int[][] answer, Node curr) {
+        if (curr == null) return;
+        
+        postorder(nodes, answer, curr.left);
+        postorder(nodes, answer, curr.right);            
+        answer[1][index++] = curr.id;
     }
 }
